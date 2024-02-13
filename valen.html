@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invitación a Comer Tacos</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #ffcccc; /* Fondo rojo claro */
+        overflow: hidden; /* Oculta el desbordamiento */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        height: 100vh;
+        position: relative;
+    }
+
+    .heart {
+        position: absolute;
+        width: 20px; /* Ancho del confeti */
+        height: 20px; /* Alto del confeti */
+        background-color: #ffb6c1; /* Color del confeti (rosa pastel) */
+        border-radius: 50%;
+    }
+
+    .question {
+        font-size: 24px;
+        color: white;
+        margin-bottom: 20px;
+        transition: opacity 1s; /* Transición de opacidad para desvanecer */
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: opacity 1s; /* Transición de opacidad para desvanecer */
+    }
+
+    .button {
+        padding: 10px 20px;
+        font-size: 18px;
+        margin: 0 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .yes-button {
+        background-color: green;
+        color: white;
+    }
+
+    .no-button {
+        background-color: red;
+        color: white;
+    }
+
+    #confirmation-image {
+        display: none;
+        max-width: 80%; /* Limita el ancho de la imagen al 80% del tamaño del contenedor */
+    }
+
+    #confirmation-text {
+        display: none;
+        font-size: 24px;
+        color: white;
+        text-align: center;
+        margin-top: 20px;
+    }
+</style>
+</head>
+<body>
+    <div class="question" id="question">¿Quieres ir a comer tacos mañana conmigo?</div>
+    <div class="button-container" id="button-container">
+        <button class="button yes-button" onclick="showConfirmation()">Sí</button>
+        <button class="button no-button" onclick="enlargeYesButton()">No</button>
+    </div>
+
+    <img id="confirmation-image" src="TKS.jpg">
+    <div id="confirmation-text">Nos ponemos de acuerdo te amo</div>
+
+    <script>
+        function enlargeYesButton() {
+            const yesButton = document.querySelector('.yes-button');
+            const currentSize = window.getComputedStyle(yesButton).fontSize;
+            const newSize = parseInt(currentSize) + 1 + 'px';
+            yesButton.style.fontSize = newSize;
+        }
+
+        function showConfirmation() {
+            const question = document.getElementById('question');
+            question.style.opacity = '0'; // Desvanece la pregunta
+            const buttonContainer = document.getElementById('button-container');
+            buttonContainer.style.opacity = '0'; // Desvanece los botones
+            setTimeout(() => {
+                question.style.display = 'none'; // Oculta la pregunta después del desvanecimiento
+                buttonContainer.style.display = 'none'; // Oculta los botones después del desvanecimiento
+                const confirmationImage = document.getElementById('confirmation-image');
+                confirmationImage.style.display = 'block'; // Muestra la imagen
+                const confirmationText = document.getElementById('confirmation-text');
+                confirmationText.style.display = 'block'; // Muestra el texto
+            }, 1000); // Espera 1 segundo antes de ocultar la pregunta y los botones
+            const confettiCount = 300; // Ajusta la cantidad de confeti
+            for (let i = 0; i < confettiCount; i++) {
+                setTimeout(createConfetti, i * 10); // Cambia 10 por el retraso deseado entre confeti en milisegundos
+            }
+        }
+
+        function createConfetti() {
+            const confetti = document.createElement('div');
+            confetti.classList.add('heart');
+            confetti.style.left = Math.random() * window.innerWidth + 'px';
+            confetti.style.top = '-20px'; // Comienza desde arriba
+            document.body.appendChild(confetti);
+            const confettiFall = setInterval(() => {
+                const confettiTop = parseFloat(confetti.style.top);
+                if (confettiTop < window.innerHeight) {
+                    confetti.style.top = (confettiTop + 1) + 'px';
+                } else {
+                    clearInterval(confettiFall);
+                    confetti.remove();
+                    setTimeout(createConfetti, Math.random() * 3000); // Vuelve a crear un nuevo confeti después de un breve retraso
+                }
+            }, 10); // Cambia 10 por la velocidad de caída deseada en milisegundos
+        }
+    </script>
+</body>
+</html>
